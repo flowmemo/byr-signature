@@ -7,6 +7,7 @@
 // @match        https://bbs.byr.cn/*
 // @grant        GM_getValue
 // @grant        GM_setValue
+// @license      MIT
 // ==/UserScript==
 
 // JavaScript Standard Style: https://github.com/feross/standard
