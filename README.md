@@ -9,7 +9,7 @@ Chrome用户需先安装Tampermonkey, Firefox用户需先安装Greasemonkey.
 
 安装插件后到https://greasyfork.org/en/scripts/20400-byr-signature 安装脚本即可使用.
 
-修改签名请在发帖页面(比如 https://bbs.byr.cn/#!article/WWWTechnology/post)进行.
+编辑和修改签名请在发帖页面(比如 https://bbs.byr.cn/#!article/WWWTechnology/post)进行.
 
 ## LICENSE
 [MIT](https://opensource.org/licenses/MIT)
