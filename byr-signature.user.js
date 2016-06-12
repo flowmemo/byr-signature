@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         byr-signature
 // @namespace    weibo.com/flowmemo
-// @version      0.1.6
+// @version      0.1.7
 // @description  为北邮人论坛发帖添加个性签名
 // @author       flowmemo
 // @match        https://bbs.byr.cn/*
