@@ -8,8 +8,10 @@
 // @grant        GM_getValue
 // @grant        GM_setValue
 // @license      MIT
+// @supportURL   https://github.com/flowmemo/byr-signature
 // ==/UserScript==
 
+// github repository: https://github.com/flowmemo/byr-signature
 // JavaScript Standard Style: https://github.com/feross/standard
 
 ;(function () {
