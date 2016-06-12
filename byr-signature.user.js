@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         byr-signature
-// @namespace    https://github.com/flowmemo/byr-signature
-// @version      0.1.5
+// @namespace    weibo.com/flowmemo
+// @version      0.1.6
 // @description  为北邮人论坛发帖添加个性签名
 // @author       flowmemo
 // @match        https://bbs.byr.cn/*
@@ -14,18 +14,16 @@
 
 ;(function () {
   'use strict'
-
-  log('hello')
-
   var _DEBUG = 0
   function log () {
     if (_DEBUG === 1) console.log.apply(console, arguments)
   }
 
+  log('hello')
+
   var defaultSig = '————\n' +
-        '示例签名:\n' +
-        '微博 [url=http://weibo.com/flowmemo][color=#0000FF]@flowmemo[/color][/url] , 现在主要写JavaScript. 关注广泛, 欢迎交流.\n' +
-        '\n' +
+        '示例签名: 微博 [url=http://weibo.com/flowmemo][color=#0000FF]@flowmemo[/color][/url] , 现在主要写JavaScript. 关注广泛, 欢迎交流.\n' +
+        '修改签名请到[url=https://bbs.byr.cn/#!article/WWWTechnology/post][color=#0000FF]这里[/color][/url]\n' +
         '[url=https://github.com/flowmemo/byr-signature][color=#0000FF]此签名通过「北邮人签名档」脚本发送[/color][/url]'
   var id // timeout id
 
