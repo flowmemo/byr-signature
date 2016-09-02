@@ -2,7 +2,7 @@
 // ==UserScript==
 // @name         byr-signature
 // @namespace    weibo.com/flowmemo
-// @version      0.1.8
+// @version      0.1.9
 // @description  为北邮人论坛发帖添加个性签名
 // @author       flowmemo
 // @match        https://bbs.byr.cn/*
@@ -23,9 +23,10 @@
 
   const defaultSig =
     `————
-     示例签名: 微博 [url=http://weibo.com/flowmemo][color=#0000FF]@flowmemo[/color][/url] , 现在主要写JavaScript. 关注广泛, 欢迎交流.
-     修改签名请到[url=https://bbs.byr.cn/#!article/WWWTechnology/post][color=#0000FF]这里[/color][/url]
-     [url=https://github.com/flowmemo/byr-signature][color=#0000FF]此签名通过「北邮人签名档」脚本发送[/color][/url]`
+示例签名: 微博 [url=http://weibo.com/flowmemo][color=#0000FF]@flowmemo[/color][/url] , 现在主要写JavaScript. 关注广泛, 欢迎交流.
+修改签名请到[url=https://bbs.byr.cn/#!article/WWWTechnology/post][color=#0000FF]这里[/color][/url]
+[url=https://github.com/flowmemo/byr-signature][color=#0000FF]此签名通过「北邮人签名档」脚本发送[/color][/url]`
+
   let id // timeout id
 
   function getSig () {
