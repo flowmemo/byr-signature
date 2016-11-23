@@ -1,11 +1,12 @@
-/* eslint-env greasemonkey */
+/* eslint-env greasemonkey, browser */
 // ==UserScript==
 // @name         byr-signature
 // @namespace    weibo.com/flowmemo
-// @version      0.1.9
+// @version      0.2.0
 // @description  为北邮人论坛发帖添加个性签名
 // @author       flowmemo
-// @match        https://bbs.byr.cn/*
+// @match        *://bbs.byr.cn/*
+// @match        *://bbs6.byr.cn/*
 // @grant        GM_getValue
 // @grant        GM_setValue
 // @license      MIT
@@ -14,12 +15,14 @@
 
 ; (function () {
   'use strict'
-  const _DEBUG = 0
-  function log () {
-    if (_DEBUG === 1) console.log.apply(console, arguments)
-  }
+  const _DEBUG = false
+  const log = (function () {
+    if (_DEBUG) return console.log.bind(console)
+    else return Function.prototype
+  })()
 
-  log('hello')
+  log('init')
+  const added = new WeakSet()
 
   const defaultSig =
     `————
@@ -27,44 +30,38 @@
 修改签名请到[url=https://bbs.byr.cn/#!article/WWWTechnology/post][color=#0000FF]这里[/color][/url]
 [url=https://github.com/flowmemo/byr-signature][color=#0000FF]此签名通过「北邮人签名档」脚本发送[/color][/url]`
 
-  let id // timeout id
+  function getUsername () {
+    const user = document.querySelector('.u-login-id a')
+    if (!user) {
+      log('cannot find username')
+      return false
+    }
+    const username = user.title
+    return username
+  }
 
   function getSig () {
-    // get username
-    let user = document.querySelector('.u-login-id a')
-    if (!user) return
-    user = user.title
-
-    // get sig
-    const signature = GM_getValue('sig-' + user, defaultSig)
+    const username = getUsername()
+    if (!username) return false
+    const signature = GM_getValue('sig-' + username, defaultSig)
     return signature
   }
 
   function addPostSig () {
     log('addPostSig')
     const div = document.getElementById('post_content')
-    if (!div) return
+    if (!div || added.has(div)) return false
+    added.add(div)
     div.value += '\n' + getSig()
+    addSigPanel()
     return true
   }
 
   function addQuickSig () {
     log('addQuickSig')
-
-    // check whether page is loaded by comparing URL with real displayed page
-    const page = document.querySelector('.page-select a')
-    if (!page) return
-    const curPage = page.text
-    if (!window.location.href.match(/\?p=(\d+)/)) {
-      if (curPage !== '1') return
-    } else {
-      const hrefPage = window.location.href.match(/\?p=(\d+)/)[1]
-      if (hrefPage !== curPage) return
-    }
-
     const div = document.getElementsByName('content')[0]
-    if (!div) return
-
+    if (!div || added.has(div)) return false
+    added.add(div)
     div.value += '\n' + getSig()
     log('add value')
     return true
@@ -72,12 +69,10 @@
 
   function addSigPanel () {
     log('sigPanel')
-
     const div = document.createElement('div')
     const postItems = document.getElementsByClassName('post-list-item')
     const referNode = postItems[postItems.length - 2]
     referNode.appendChild(div)
-
     div.outerHTML =
       `<br><br><div>
        <div class="post-m">byr-signature自定义签名</div>
@@ -86,36 +81,26 @@
        </div><p><input name="saveSig" type="button" value="保存"> 保存后刷新页面生效（注意保存你的发帖内容） </p></div>`
 
     const userSig = document.getElementsByName('sig-content')[0]
-
     userSig.value = getSig()
     const saveButton = document.getElementsByName('saveSig')[0]
 
-    // get username
-    let user = document.querySelector('.u-login-id a')
-    if (!user) return
-    user = user.title
+    const username = getUsername()
+    if (!username) return false
     saveButton.addEventListener('click', function () {
-      GM_setValue('sig-' + user, userSig.value)
+      log('save')
+      log('username', username)
+      GM_setValue('sig-' + username, userSig.value)
     })
   }
 
-  function polling () {
-    log('polling')
-
-    if (window.location.href.indexOf('#!article') === -1) return
-    window.clearTimeout(id) // clear timeout if it already exists
-
-      ; (function cb () {
-        if (window.location.href.indexOf('/post') > -1) {
-          if (addPostSig()) {
-            addSigPanel()
-            return
-          }
-        } else if (addQuickSig()) return
-        id = setTimeout(cb, 300)
-      })()
+  function onPageChange () {
+    log('onPageChange')
+    if (window.location.href.match(/'#!article'/)) return
+    if (window.location.href.match(/edit|post/)) {
+      log(addPostSig())
+    } else log(addQuickSig())
   }
-
-  if (window.location.href.indexOf('#!article') > -1) polling()
-  window.addEventListener('hashchange', polling)
+  onPageChange()
+  const observer = new MutationObserver(onPageChange)
+  observer.observe(document.body, {childList: true, subtree: true})
 })()
