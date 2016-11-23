@@ -12,4 +12,4 @@ Chrome用户需先安装Tampermonkey, Firefox用户需先安装Greasemonkey.
 编辑和修改签名请在发帖页面(比如<https://bbs.byr.cn/#!article/WWWTechnology/post>)进行.
 
 ## LICENSE
-[MIT](https://opensource.org/licenses/MIT)
+[MIT] © [flowmemo](https://opensource.org/licenses/MIT)
