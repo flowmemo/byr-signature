@@ -2,7 +2,7 @@
 // ==UserScript==
 // @name         byr-signature
 // @namespace    weibo.com/flowmemo
-// @version      0.2.0
+// @version      0.2.1
 // @description  为北邮人论坛发帖添加个性签名
 // @author       flowmemo
 // @match        *://bbs.byr.cn/*
@@ -95,8 +95,9 @@
 
   function onPageChange () {
     log('onPageChange')
-    if (window.location.href.match(/'#!article'/)) return
-    if (window.location.href.match(/edit|post/)) {
+    const URL = window.location.href
+    if (URL.indexOf('#!article') === -1 || URL.indexOf('edit') > -1) return
+    if (window.location.href.match(/post/)) {
       log(addPostSig())
     } else log(addQuickSig())
   }
